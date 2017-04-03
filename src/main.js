@@ -12,10 +12,20 @@ Object.defineProperty(Vue.prototype, '$moment', {get() { return this.$root.momen
 const bus = new Vue();
 Object.defineProperty(Vue.prototype, '$bus', {get () { return this.$root.bus}});
 
-import MovieList from './components/MovieList.vue';
-import MovieFilter from './components/MovieFilter.vue';
-
 import { checkFilter } from './util/bus.js';
+
+import Overview from './components/Overview.vue';
+
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
+
+import routes from './util/routes';
+
+const router = new VueRouter(
+    {
+        routes 
+    }
+)
 
 new Vue({
     el: '#app',
@@ -27,12 +37,8 @@ new Vue({
         day: moment(),
         bus
     },
-    methods: {
-                
-            },
     components: {
-        MovieList,
-        MovieFilter 
+        Overview
     },
     created() {
         this.$http.get('/api')
@@ -40,5 +46,6 @@ new Vue({
             this.movies = response.data;
         });
         this.$bus.$on('check-filter', checkFilter.bind(this));
-    }
+    },
+    router
 });
