@@ -12,7 +12,7 @@ Object.defineProperty(Vue.prototype, '$moment', {get() { return this.$root.momen
 const bus = new Vue();
 Object.defineProperty(Vue.prototype, '$bus', {get () { return this.$root.bus}});
 
-import { checkFilter } from './util/bus.js';
+import { checkFilter, setDay } from './util/bus.js';
 
 import Overview from './components/Overview.vue';
 
@@ -20,6 +20,9 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 import routes from './util/routes';
+
+import Tooltip from './util/tooltip';
+Vue.use(Tooltip);
 
 const router = new VueRouter(
     {
@@ -46,6 +49,7 @@ new Vue({
             this.movies = response.data;
         });
         this.$bus.$on('check-filter', checkFilter.bind(this));
+        this.$bus.$on('set-day', setDay.bind(this));
     },
     router
 });
